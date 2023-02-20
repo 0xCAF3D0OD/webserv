@@ -1,21 +1,59 @@
 = week 1
-:sectnums:
 :toc: left
+:nofooter:
 
 == Create the repository
 
 Create branches
 
-* main
+* `main`
 ** require a pull request before merging
 ** require two approvals
 ** dismiss stale pull request approvals when new commits are pushed
 ** lock branch
 ** do not allow bypassing the above settings
-* stage
+* `stage`
 ** require a pull request before merging
 ** require one approvals
 ** dismiss stale pull request approvals when new commits are pushed
-* dev
+* `dev`
 ** require a pull request before merging
 ** require one approvals
+
+== Copy big-box
+
+Do a pull request: `theo-infra` -> `dev`
+
+== Read the-linux-programming-interface-michael-kerrisk
+
+=== Chapter 56.1
+
+==== I don't understang this point
+
+The server binds its socket to a well-known address (name) so that clients can locate it.
+
+==== Difference MacOS and GNU/Linux
+
+Examples of differences:
+
+|===
+| Domains |MacOS `man 2 socket` | GNU/Linux `man 2 socket` | This book
+
+|UNIX
+|PF_UNIX
+|AF_UNIX
+|AF_UNIX
+
+|IPv4
+|PF_INET
+|AF_INET
+|AF_INET
+
+|IPv6
+|PF_INET6
+|AF_INET6
+|AF_INET6
+|===
+
+AF:: Address family
+PF:: Protocol family
