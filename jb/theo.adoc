@@ -4,7 +4,7 @@
 
 == Create the repository
 
-Create branches
+Create branches and set rules for them
 
 * `main`
 ** require a pull request before merging
@@ -23,6 +23,8 @@ Create branches
 == Copy big-box
 
 Do a pull request: `theo-infra` -> `dev`
+
+Approved by Robin
 
 == Read the-linux-programming-interface-michael-kerrisk
 
