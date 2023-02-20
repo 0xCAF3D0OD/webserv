@@ -2,6 +2,16 @@
 :toc: left
 :nofooter:
 
+== stage one
+
+* [ ] documentation
+** [ ] how this project is organized ?
+** [ ] usecase of the web server
+* [ ] code
+** [ ] check if there is 1 argument
+** [ ] print webserv in the terminal
+** [ ] created tests for theses functions
+
 == Create the repository
 
 Create branches and set rules for them
