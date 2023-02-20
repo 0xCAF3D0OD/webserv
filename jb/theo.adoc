@@ -1,0 +1,21 @@
+= week 1
+:sectnums:
+:toc: left
+
+== Create the repository
+
+Create branches
+
+* main
+** require a pull request before merging
+** require two approvals
+** dismiss stale pull request approvals when new commits are pushed
+** lock branch
+** do not allow bypassing the above settings
+* stage
+** require a pull request before merging
+** require one approvals
+** dismiss stale pull request approvals when new commits are pushed
+* dev
+** require a pull request before merging
+** require one approvals
