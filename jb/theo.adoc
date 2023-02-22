@@ -8,7 +8,7 @@
 ** [ ] how this project is organized ?
 ** [ ] usecase of the web server
 * [ ] code
-** [ ] check if there is 1 argument
+** [ ] check if there is 1 argument else print help message
 ** [ ] print webserv in the terminal
 ** [ ] created tests for theses functions
 
