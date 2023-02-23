@@ -2,7 +2,9 @@
 :toc: left
 :nofooter:
 
-== stage one
+== Checklist
+
+=== 2023.02.20 - stage one
 
 * [ ] documentation
 ** [ ] how this project is organized ?
@@ -12,7 +14,9 @@
 ** [ ] print webserv in the terminal
 ** [ ] created tests for theses functions
 
-== Create the repository
+== Manage the github repository
+
+=== 2023.02.20 - Create the repository
 
 Create branches and set rules for them
 
@@ -30,15 +34,22 @@ Create branches and set rules for them
 ** require a pull request before merging
 ** require one approvals
 
-== Copy big-box
+=== 2023.02.23 - need two approvement
+
+For each branches (dev, stage and main), each member has to approved pull request.
+We set it for one or two for everyone takes the habit to check pull request
+
+== Web server
+
+=== 2023.02.20 - Copy big-box
 
 Do a pull request: `theo-infra` -> `dev`
 
 Approved by Robin
 
-== Read the-linux-programming-interface-michael-kerrisk
+== Documentation
 
-=== Chapter 56.1
+=== 2023.02.20 - Chapter 56.1 of the linux programming interface
 
 ==== I don't understang this point
 
@@ -70,10 +81,12 @@ Examples of differences:
 AF:: Address family
 PF:: Protocol family
 
-== Rewrite the framework and add cland-format file
+== Framework
+
+=== 2023.02.21 - Rewrite and add cland-format file
 
 Rewrite https://en.wikipedia.org/wiki/Object-oriented_programming[OOP] the framework, that make easier to use
 
-== Framework
+=== 2023.02.20 - Check the standard and error output of the function
 
 Add a checker of stdout and stderr
