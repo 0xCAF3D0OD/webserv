@@ -83,6 +83,11 @@ PF:: Protocol family
 
 == Framework
 
+=== 2023.02.23 - miscellaneous changes #11
+
+* framework: fix return value
+* framework: add libraries for GNU/Linux compilation
+
 === 2023.02.21 - Rewrite and add cland-format file
 
 Rewrite https://en.wikipedia.org/wiki/Object-oriented_programming[OOP] the framework, that make easier to use
