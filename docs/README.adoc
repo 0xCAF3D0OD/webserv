@@ -31,10 +31,20 @@ class json::Value
 
 === Sequence diagram
 
-[plantuml, target=sequence, format=svg, width=60%]
+[plantuml, target=sequence_dns, format=svg, width=60%]
 ....
 Client -> "Web server": request
 "Web server" -> Client: response
+....
+
+==== Client DNS
+
+[plantuml, target=sequence, format=svg, width=60%]
+....
+Client -> "DNS": request, what is the IP address of google.com
+"DNS" -> Client: the IP address of google.com is 212.12.53.111
+Client -> "212.12.53.111" : request
+"212.12.53.111" -> Client : response
 ....
 
 === Activity diagram
