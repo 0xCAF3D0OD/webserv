@@ -70,6 +70,32 @@ pjf --> loop : success
 pjf --> [*] : failed
 ....
 
+==== The main loop
+
+[plantuml, target=state-main_loop, format=svg, width=60%]
+....
+state "web server main loop" as ws_loop {
+  state "process request" as prequest
+  state "process response" as presponse
+}
+state "web site folder" as wsf {
+  state "index.html" as index
+  state "boo.php" as php
+  state "foo.py" as py
+  state "stylesheet.css" as css
+}
+state "client" as client
+state "cgi" as cgi
+
+[*] --> ws_loop : start
+client --> prequest : received a request
+prequest --> wsf : request a file
+wsf --> presponse : if the index.html is available
+presponse --> client : return the response
+presponse --> cgi : give php or py source file
+cgi --> presponse : return the output processed
+....
+
 == The project organisation
 
 This diagram represents:
