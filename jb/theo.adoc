@@ -4,7 +4,11 @@
 
 == Checklist
 
-=== 2023.02.20 - stage one
+=== Stage one
+
+____
+2023.02.20
+____
 
 * [ ] documentation
 ** [ ] how this project is organized ?
@@ -16,7 +20,11 @@
 
 == Manage the github repository
 
-=== 2023.02.20 - Create the repository
+=== Create the repository
+
+____
+2023.02.20
+____
 
 Create branches and set rules for them
 
@@ -34,12 +42,20 @@ Create branches and set rules for them
 ** require a pull request before merging
 ** require one approvals
 
-=== 2023.02.23 - need two approvement
+=== Need two approvement
+
+____
+2023.02.23
+____
 
 For each branches (dev, stage and main), each member has to approved pull request.
 We set it for one or two for everyone takes the habit to check pull request
 
-=== 2023.03.08 - Merge stage into the main
+=== Merge stage into the main
+
+____
+2023.03.08
+____
 
 . duplicate `stage` into `stage-1`
 . squash and merge `stage` into `main`
@@ -65,7 +81,11 @@ git push -f origin ${my-branch-to-update}
 
 == Web server
 
-=== 2023.02.20 - Copy big-box
+=== Copy big-box
+
+____
+2023.02.20
+____
 
 Do a pull request: `theo-infra` -> `dev`
 
@@ -73,7 +93,11 @@ Approved by Robin
 
 == Documentation
 
-=== 2023.02.20 - Chapter 56.1 of the linux programming interface
+=== Chapter 56.1 of the linux programming interface
+
+____
+2023.02.20
+____
 
 ==== I don't understang this point
 
@@ -107,15 +131,27 @@ PF:: Protocol family
 
 == Framework
 
-=== 2023.02.23 - miscellaneous changes #11
+=== Miscellaneous changes #11
+
+____
+2023.02.23
+____
 
 * framework: fix return value
 * framework: add libraries for GNU/Linux compilation
 
-=== 2023.02.21 - Rewrite and add cland-format file
+=== Rewrite and add cland-format file
+
+____
+2023.02.21
+____
 
 Rewrite https://en.wikipedia.org/wiki/Object-oriented_programming[OOP] the framework, that make easier to use
 
-=== 2023.02.20 - Check the standard and error output of the function
+=== Check the standard and error output of the function
+
+____
+2023.02.20
+____
 
 Add a checker of stdout and stderr
