@@ -155,3 +155,22 @@ ____
 ____
 
 Add a checker of stdout and stderr
+
+== Docker
+
+=== Create a clang image
+
+____
+2023.03.10 : Create a docker image for formating the source files.
+____
+
+I tried with an `alpine` image, the problem was that the `clang` package wasn't up of date. Finally, I used an `archlinux` image.
+
+Create a `docker` folder and `clang` as a subfolder and its own `Makefile` and `Dockerfile`
+
+How use it ?
+
+. go into `docker/clang`
+. execute `make`
+. back to the root of the project
+. execute `make formatdocker`
