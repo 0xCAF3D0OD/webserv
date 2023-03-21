@@ -131,6 +131,47 @@ framework_obj : - framework inc
 libunit : - framework obj
 ....
 
+== The CGI
+
+=== Sequence diagram
+
+[plantuml, target=sequence_cgi, format=svg, width=60%]
+....
+Client -> "Web server": request file.php
+"Web server" -> cgi : file.php
+cgi -> "Web server" : html
+"Web server" -> Client: response <html>
+....
+
+=== Activity diagram
+
+[plantuml, target=activity_cgi, format=svg, width=60%]
+....
+start
+:pipe();
+:fork();
+fork
+note left
+  if pid == 0
+  Child process
+end note
+  :dup2(pipe[1], STDOUT);;
+  :close(pipe[1]);;
+  :close(pipe[0]);;
+  :execve();
+  stop
+fork again
+note left
+  if pid != 0
+  Parent process
+end note
+  :close(pipe[1]);;
+  :read(pipe[0]);
+  :close(pipe[0]);;
+end fork;
+stop
+....
+
 == Resources
 
 === Tools
