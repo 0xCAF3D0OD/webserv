@@ -70,7 +70,7 @@ pjf --> loop : success
 pjf --> [*] : failed
 ....
 
-== The CGI
+== CGI
 
 === Sequence diagram
 
