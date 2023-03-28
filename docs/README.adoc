@@ -104,6 +104,10 @@ end note
   :close(pipe[1]);;
   :close(pipe[0]);;
   :execve();
+  :exit(1);
+note left
+  the execve has failed
+end note
   stop
 fork again
 note left
