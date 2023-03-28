@@ -94,6 +94,12 @@ note left
   if pid == 0
   Child process
 end note
+  :chdir();
+note left
+  change directory
+  for the php file
+  folder
+end note
   :dup2(pipe[1], STDOUT);;
   :close(pipe[1]);;
   :close(pipe[0]);;
