@@ -111,7 +111,7 @@ note left
   Parent process
 end note
   :close(pipe[1]);;
-  :waitpid(pid, stat_loc, 0);
+  :waitpid(pid, &stat_loc, 0);
   if (WEXITSTATUS(stat_loc)) is (true) then
     :return 1;
 	stop
