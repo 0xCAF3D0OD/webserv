@@ -111,6 +111,12 @@ note left
   Parent process
 end note
   :close(pipe[1]);;
+  :waitpid(pid, stat_loc, 0);
+  if (WEXITSTATUS(stat_loc)) is (true) then
+    :return 1;
+	stop
+  else (false)
+  endif
   :read(pipe[0]);
   :close(pipe[0]);;
 end fork;
