@@ -61,4 +61,9 @@ int test_file_get_string(void);
 int test_file_get_number(void);
 int test_file_get_string_empty_string(void);
 
+/* execve cgi */
+
+int execve_cgi_launcher(void);
+int test_execve_cgi(void);
+
 #endif /* TESTS_H */
