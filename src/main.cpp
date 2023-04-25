@@ -19,21 +19,25 @@ binary_file(void)
 	int			fd_src;
 	const char *file_path_src = "test/website/favicon.ico";
 	const char *file_path_dst = "destination.ico";
+	const char *file_path_dst_failed = "destination_failed.ico";
 
 	fd_src = open(file_path_src, O_RDONLY);
 	if (fd_src == -1)
 		return;
 
 	std::ofstream file_dst(file_path_dst, std::ios::trunc | std::ios::binary);
+	std::ofstream file_dst_error(file_path_dst_failed, std::ios::trunc | std::ios::binary);
 
 	do
 	{
 		std::memset(buffer, 0, BS);
 		bytes_read = read(fd_src, buffer, BS_NULL);
 		file_dst.write(buffer, bytes_read);
+		file_dst_error << buffer; /* bad pratice because the output is unformatted */
 	} while (bytes_read == BS_NULL);
 
 	file_dst.close();
+	file_dst_error.close();
 	close(fd_src);
 }
 
