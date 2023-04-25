@@ -18,18 +18,14 @@ binary_file(void)
 	char		buffer[BS];
 	int			fd_src;
 	std::string all_file;
-	const char *file_path_src = "test/website/favicon.ico";
-	const char *file_path_dst = "destination.ico";
-	const char *file_path_dst_failed = "destination_failed.ico";
-	const char *file_path_dst_string = "destination_string.ico";
 
-	fd_src = open(file_path_src, O_RDONLY);
+	fd_src = open("test/website/favicon.ico", O_RDONLY);
 	if (fd_src == -1)
 		return;
 
-	std::ofstream file_dst(file_path_dst, std::ios::trunc | std::ios::binary);
-	std::ofstream file_dst_error(file_path_dst_failed, std::ios::trunc | std::ios::binary);
-	std::ofstream file_dst_string(file_path_dst_string, std::ios::trunc | std::ios::binary);
+	std::ofstream file_dst("destination.ico", std::ios::trunc | std::ios::binary);
+	std::ofstream file_dst_error("destination_failed.ico", std::ios::trunc | std::ios::binary);
+	std::ofstream file_dst_string("destination_string.ico", std::ios::trunc | std::ios::binary);
 
 	do
 	{
