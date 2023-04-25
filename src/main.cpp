@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include <fstream>
+
 #define BS 10
 #define BS_NULL 9
 
@@ -14,21 +16,26 @@ binary_file(void)
 {
 	ssize_t		bytes_read;
 	char		buffer[BS];
-	int			fd;
-	const char *file_path = "src/main.cpp";
+	int			fd_src;
+	const char *file_path_src = "src/main.cpp";
+	const char *file_path_dst = "destination_file.cpp";
 
-	fd = open(file_path, O_RDONLY);
-	if (fd == -1)
+	fd_src = open(file_path_src, O_RDONLY);
+	if (fd_src == -1)
 		return;
+
+	std::ofstream file_dst(file_path_dst, std::ios::trunc);
 
 	do
 	{
 		std::memset(buffer, 0, BS);
-		bytes_read = read(fd, buffer, BS_NULL);
+		bytes_read = read(fd_src, buffer, BS_NULL);
 		printf("%s", buffer);
+		file_dst.write(buffer, bytes_read);
 	} while (bytes_read == BS_NULL);
 
-	close(fd);
+	file_dst.close();
+	close(fd_src);
 }
 
 int
