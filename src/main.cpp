@@ -1,9 +1,17 @@
 #include "arguments.hpp"
 #include "webserver.hpp"
 
+static void
+main_loop(void)
+{
+}
+
 int
 main(int argc, char **argv)
 {
+	main_loop();
+	return 0;
+
 	if (arguments::check_argc_number(argc))
 		return 1;
 
