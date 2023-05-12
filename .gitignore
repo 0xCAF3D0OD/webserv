@@ -6,3 +6,4 @@ webserv
 .idea
 .vscode
 .DS_Store
+setting.hpp

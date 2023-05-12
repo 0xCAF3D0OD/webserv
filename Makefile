@@ -93,7 +93,7 @@ $(LIB): $(OBJS)
 	@$(MAKE) --directory=test re
 	@printf "$(GREEN)---> test$(DEFAULT)\n"
 
-test: $(LIB)
+test: $(LIB) setting
 	@$(MAKE) --directory=test
 	@printf "$(YELLOW)Launching test..$(DEFAULT)\n"
 	@(test/test && printf "$(GREEN)test: SUCCESS$(DEFAULT)\n") || printf "$(RED)test: ERROR$(DEFAULT)\n"
@@ -104,6 +104,10 @@ test: $(LIB)
 	--add-host webserv.com:host-gateway \
 	--rm  my-python && \
 	printf "$(GREEN)test: SUCCESS$(DEFAULT)\n") || printf "$(RED)test: ERROR$(DEFAULT)\n"
+
+setting:
+	@if ! grep $(shell whoami) test/inc/setting.hpp 1>/dev/null; then sh setting.sh ;fi
+
 
 db: $(NAME)
 	$(DB) $(NAME)
