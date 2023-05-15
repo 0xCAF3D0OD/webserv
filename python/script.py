@@ -1,11 +1,26 @@
 #!/bin/python3
 
+from requests_toolbelt import MultipartEncoder
 import requests
 import sys
 import threading
 
 exit_code = 0
 TREADS_NUMBER = 15
+
+# From test/website/submitPage.html:
+# try as fild name different name
+#
+# <input
+# type="file"
+# name="pics"
+# id="pics-input"
+# accept="image/*, .pdf" />
+
+#field_name = "pics"
+field_name = "pics-input"
+the_png_file = "pp.png"
+#field_name = "pics"
 
 class bcolors:
     HEADER    = '\033[95m'
@@ -65,8 +80,8 @@ def try_one():
     print ("one")
 
     url = "http://localhost:8081/uploads"
-    filename = "not-real-png.png"
-    myfiles = {"file": (filename, open(filename, "rb"))}
+    filename = the_png_file
+    myfiles = {field_name: (filename, open(filename, "rb"))}
 
     try:
         response = requests.post(url, files=myfiles)
@@ -80,11 +95,28 @@ def try_two():
     print ("two")
 
     url = "http://localhost:8081/uploads"
-    filename = "not-real-png.png"
-    myfiles = {"file": (filename, open(filename, "rb"), 'image/png')}
+    filename = the_png_file
+    myfiles = {field_name: (filename, open(filename, "rb"), 'image/png')}
 
     try:
         response = requests.post(url, files=myfiles)
+        print(response.text)
+    except Exception as err:
+        exit_code = 1
+        print("KO post")
+
+def try_tree():
+    global exit_code
+    print ("three")
+
+    url = "http://localhost:8081/uploads"
+    filename = the_png_file
+    myfiles =  MultipartEncoder(
+    fields={field_name: ('filename', open(the_png_file, 'rb'), 'image/png')}
+    )
+
+    try:
+        response = requests.post(url, data=myfiles, headers={'Content-Type': m.content_type})
         print(response.text)
     except Exception as err:
         exit_code = 1
@@ -104,11 +136,15 @@ def multi_request ():
 
 def main ():
     multi_request()
-
-def main():
     print ("main")
+    print("field name: " + field_name)
+    print("file name : " + the_png_file)
+    print ("--------------------------------------------------------------------------------")
     try_one()
+    print ("--------------------------------------------------------------------------------")
     try_two()
+    print ("--------------------------------------------------------------------------------")
+    try_tree()
 
 
 if __name__ == "__main__":
