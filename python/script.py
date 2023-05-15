@@ -50,6 +50,9 @@ def redirection (url, url_redirection):
         print ("error: script.py not connectable")
         sys.exit(1)
 
+    print("length of history: " + str(len(request_index.history)))
+    for count, red in enumerate(request_index.history):
+        print(f"history[{count}] -- status code: {red.status_code} url: {red.url}")
     if request_index.history[0].status_code != 301:
         print_error(f"[KO] : http status code : {request_index.history[0].status_code} / 301")
         exit_code = 1
