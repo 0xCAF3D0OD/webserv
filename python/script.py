@@ -73,6 +73,11 @@ def basic_status_code_test ():
     request_get("http://webserv.com:8080/uploads", 401)
     request_get("http://webserv.com:8080/favicon.ico", 404)
 
+def print_response(response):
+    print (f"status code: {response.status_code}")
+    print (response.headers)
+    print (response.request.headers)
+
 def try_one():
     global exit_code
     print ("one")
@@ -83,7 +88,7 @@ def try_one():
 
     try:
         response = requests.post(url, files=myfiles)
-        print(response.text)
+        print_response(response)
     except Exception as err:
         exit_code = 1
         print_error("KO post")
@@ -98,7 +103,7 @@ def try_two():
 
     try:
         response = requests.post(url, files=myfiles)
-        print(response.text)
+        print_response(response)
     except Exception as err:
         exit_code = 1
         print_error("KO post")
@@ -115,7 +120,7 @@ def try_tree():
 
     try:
         response = requests.post(url, data=myfiles, headers={'Content-Type': m.content_type})
-        print(response.text)
+        print_response(response)
     except Exception as err:
         exit_code = 1
         print_error("KO post")
@@ -142,7 +147,7 @@ def try_four():
 
     try:
         response = requests.post(url, files=myfiles)
-        print(response.text)
+        print_response(response)
     except Exception as err:
         exit_code = 1
         print_error("KO post")
@@ -158,7 +163,7 @@ def try_five():
 
     try:
         response = requests.post(url, files=myfiles, data=data)
-        print(response.text)
+        print_response(response)
     except Exception as err:
         exit_code = 1
         print_error("KO post")
