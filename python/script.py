@@ -83,6 +83,7 @@ def main ():
     request_get("http://webserv.com:8080/favicon.ico", 404)
 
     redirection("http://webserv.com:8081/site_duck", "https://www.duckduckgo.com")
+    redirection("http://webserv.com:8081/site_sheep", "https://www.google.com")
 
 if __name__ == "__main__":
     main()
