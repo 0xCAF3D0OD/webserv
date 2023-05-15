@@ -74,6 +74,20 @@ def multi_request ():
 
 def main ():
     multi_request()
+    global exit_code
+    print ("start main")
+
+    url = "http://localhost:8081/uploads"
+    filename = "not-real-png.png"
+    myfiles = {"file": (filename, open(filename, "rb"))}
+
+    try:
+        response = requests.post(url, files=myfiles)
+        print(response.text)
+    except Exception as err:
+        exit_code = 1
+        print("KO post")
+
 
 if __name__ == "__main__":
     main()
