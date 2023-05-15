@@ -15,6 +15,9 @@ Redirection::~Redirection() {}
 bool
 Redirection::is_redirection(std::string const &route, std::string &url)
 {
+	if (LOG_REDIRECTION)
+		std::cout << "http::Redirection route: " << route << std::endl;
+
 	json::t_object::const_iterator redirection = _redirections.find(route);
 
 	if (redirection == _redirections.end())
@@ -28,6 +31,9 @@ Redirection::is_redirection(std::string const &route, std::string &url)
 		std::cout << "http::Redirection: it is a redirection" << std::endl;
 
 	url = redirection->second.get<std::string>();
+
+	if (LOG_REDIRECTION)
+		std::cout << "http::Redirection url: " << url << std::endl;
 
 	return true;
 }
