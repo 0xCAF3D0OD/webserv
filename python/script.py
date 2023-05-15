@@ -56,6 +56,10 @@ def redirection (url, url_redirection):
     else:
         print_success(f"[OK] : http status code : {request_index.history[0].status_code} / 301")
 
+    if len(request_index.history) < 2:
+        exit_code = 1
+        print_error("Error: The length of history is less than 2")
+        return
     if request_index.history[1].url != url_redirection:
         print_error(f"[KO] : http redirection url : {request_index.history[1].url} != {url_redirection}")
         exit_code = 1
