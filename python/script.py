@@ -17,10 +17,8 @@ TREADS_NUMBER = 15
 # id="pics-input"
 # accept="image/*, .pdf" />
 
-#field_name = "pics"
-field_name = "pics-input"
+all_field_name = ["pics", "pics-input", "file"]
 the_png_file = "pp.png"
-#field_name = "pics"
 
 class bcolors:
     HEADER    = '\033[95m'
@@ -88,7 +86,7 @@ def try_one():
         print(response.text)
     except Exception as err:
         exit_code = 1
-        print("KO post")
+        print_error("KO post")
 
 def try_two():
     global exit_code
@@ -103,11 +101,12 @@ def try_two():
         print(response.text)
     except Exception as err:
         exit_code = 1
-        print("KO post")
+        print_error("KO post")
 
 def try_tree():
     global exit_code
     print ("three")
+    print("field name: " + field_name)
 
     url = "http://localhost:8081/uploads"
     filename = the_png_file
@@ -120,7 +119,7 @@ def try_tree():
         print(response.text)
     except Exception as err:
         exit_code = 1
-        print("KO post")
+        print_error("KO post")
 
 def my_thread (name):
     print(f"tread number {name}")
@@ -134,17 +133,38 @@ def multi_request ():
     for i in range(TREADS_NUMBER):
         all_treads[i].run()
 
-def main ():
-    multi_request()
-    print ("main")
+def try_four():
+    global exit_code
+    print ("two")
     print("field name: " + field_name)
-    print("file name : " + the_png_file)
-    print ("--------------------------------------------------------------------------------")
-    try_one()
-    print ("--------------------------------------------------------------------------------")
-    try_two()
-    print ("--------------------------------------------------------------------------------")
-    try_tree()
+
+    url = "http://localhost:8081/uploads"
+    filename = the_png_file
+    myfiles = {field_name: (filename, open(filename, "rb"), 'multipart/form-data')}
+
+    try:
+        response = requests.post(url, files=myfiles)
+        print(response.text)
+    except Exception as err:
+        exit_code = 1
+        print_error("KO post")
+
+def main():
+    multi_request()
+    global field_name
+    for name_field in all_field_name:
+        field_name = name_field
+        print ("main")
+        print("field name: " + field_name)
+        print("file name : " + the_png_file)
+        print ("--------------------------------------------------------------------------------")
+        try_one()
+        print ("--------------------------------------------------------------------------------")
+        try_two()
+        print ("--------------------------------------------------------------------------------")
+        try_tree()
+        print ("--------------------------------------------------------------------------------")
+        try_four()
 
 
 if __name__ == "__main__":
