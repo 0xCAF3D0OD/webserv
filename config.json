@@ -9,8 +9,8 @@
 			"/path/two" : 3
 		},
 		"redirection" : {
-			"/site_sheep": "http://www.google.com/",
-			"/site_duck": "http://www.duckduckgo.com",
+			"/site_sheep": "https://www.google.com",
+			"/site_duck": "https://www.duckduckgo.com",
 			"/redir": "submitPage.html"
 		}
 	},
@@ -18,7 +18,7 @@
 	"dummywebsite.com": {
 		"port" : 8080,
 		"path" : "./test/website2",
-		"dir_error": "is_dir.html",	
+		"dir_error": "is_dir.html",
 		"405" : "405.html",
 		"method_allowed": {
 			"/index.html" : 1
