@@ -81,7 +81,7 @@ def try_tree():
     )
 
     try:
-        response = requests.post(url, data=myfiles, headers={'Content-Type': m.content_type})
+        response = requests.post(url, data=myfiles)
         print_response(response)
     except Exception as err:
         exit_code = 1
