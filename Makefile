@@ -112,6 +112,16 @@ test: $(LIB) setting
 	--rm  my-python && \
 	printf "$(GREEN)test: SUCCESS$(DEFAULT)\n") || printf "$(RED)test: ERROR$(DEFAULT)\n"
 
+test-python:
+	@$(MAKE) --directory=python 2>/dev/null
+	@(docker run \
+	--name python-http \
+	--network bridge \
+	--volume $(shell pwd):/workdir \
+	--add-host webserv.com:host-gateway \
+	--rm  my-python && \
+	printf "$(GREEN)test: SUCCESS$(DEFAULT)\n") || printf "$(RED)test: ERROR$(DEFAULT)\n"
+
 setting:
 	@if ! grep $(shell whoami) test/inc/setting.hpp 1>/dev/null; then sh setting.sh ;fi
 
