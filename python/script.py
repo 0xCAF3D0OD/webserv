@@ -52,8 +52,16 @@ def redirection (url, url_redirection):
 
     print("length of history: " + str(len(request_index.history)))
     for count, red in enumerate(request_index.history):
-        print(f"history[{count}] -- status code: {red.status_code} url: {red.url}")
+        print("================================================================================")
+        print(f"= history[{count}]")
+        print("================================================================================")
+        print(f"- status code: {red.status_code}")
+        print(f"- url        : {red.url}")
+        print("--------------------------------------------------------------------------------")
         print(red.request.headers)
+        print("--------------------------------------------------------------------------------")
+        print(red.headers)
+        print("--------------------------------------------------------------------------------")
         print(red.text)
     if request_index.history[0].status_code != 301:
         print_error(f"[KO] : http status code : {request_index.history[0].status_code} / 301")
