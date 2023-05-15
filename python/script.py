@@ -106,7 +106,6 @@ def try_two():
 def try_tree():
     global exit_code
     print ("three")
-    print("field name: " + field_name)
 
     url = "http://localhost:8081/uploads"
     filename = the_png_file
@@ -135,8 +134,7 @@ def multi_request ():
 
 def try_four():
     global exit_code
-    print ("two")
-    print("field name: " + field_name)
+    print ("four")
 
     url = "http://localhost:8081/uploads"
     filename = the_png_file
@@ -149,12 +147,29 @@ def try_four():
         exit_code = 1
         print_error("KO post")
 
+def try_five():
+    global exit_code
+    print ("five")
+
+    url = "http://localhost:8081/app.js"
+    filename = the_png_file
+    data = { "Button": "Submit" }
+    myfiles = {field_name: (filename, open(filename, "rb"), 'multipart/form-data')}
+
+    try:
+        response = requests.post(url, files=myfiles, data=data)
+        print(response.text)
+    except Exception as err:
+        exit_code = 1
+        print_error("KO post")
+
 def main():
+    print ("main")
     multi_request()
     global field_name
     for name_field in all_field_name:
         field_name = name_field
-        print ("main")
+        print ("================================================================================")
         print("field name: " + field_name)
         print("file name : " + the_png_file)
         print ("--------------------------------------------------------------------------------")
@@ -165,6 +180,8 @@ def main():
         try_tree()
         print ("--------------------------------------------------------------------------------")
         try_four()
+        print ("--------------------------------------------------------------------------------")
+        try_five()
 
 
 if __name__ == "__main__":
