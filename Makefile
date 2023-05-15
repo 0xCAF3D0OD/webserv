@@ -92,6 +92,16 @@ test: $(LIB)
 	@printf "$(YELLOW)Launching test..$(DEFAULT)\n"
 	@(test/test && printf "$(GREEN)test: SUCCESS$(DEFAULT)\n") || printf "$(RED)test: ERROR$(DEFAULT)\n"
 
+test-python:
+	@$(MAKE) --directory=python 2>/dev/null
+	@(docker run \
+	--name python-http \
+	--network bridge \
+	--volume $(shell pwd):/workdir \
+	--add-host webserv.com:host-gateway \
+	--rm  my-python && \
+	printf "$(GREEN)test: SUCCESS$(DEFAULT)\n") || printf "$(RED)test: ERROR$(DEFAULT)\n"
+
 db: $(NAME)
 	$(DB) $(NAME)
 
