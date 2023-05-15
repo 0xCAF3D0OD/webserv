@@ -77,7 +77,7 @@ def try_one():
     global exit_code
     print ("one")
 
-    url = "http://localhost:8081/uploads"
+    url = "http://webserv.com:8081/uploads"
     filename = the_png_file
     myfiles = {field_name: (filename, open(filename, "rb"))}
 
@@ -92,7 +92,7 @@ def try_two():
     global exit_code
     print ("two")
 
-    url = "http://localhost:8081/uploads"
+    url = "http://webserv.com:8081/uploads"
     filename = the_png_file
     myfiles = {field_name: (filename, open(filename, "rb"), 'image/png')}
 
@@ -107,7 +107,7 @@ def try_tree():
     global exit_code
     print ("three")
 
-    url = "http://localhost:8081/uploads"
+    url = "http://webserv.com:8081/uploads"
     filename = the_png_file
     myfiles =  MultipartEncoder(
     fields={field_name: ('filename', open(the_png_file, 'rb'), 'image/png')}
@@ -136,7 +136,7 @@ def try_four():
     global exit_code
     print ("four")
 
-    url = "http://localhost:8081/uploads"
+    url = "http://webserv.com:8081/uploads"
     filename = the_png_file
     myfiles = {field_name: (filename, open(filename, "rb"), 'multipart/form-data')}
 
@@ -151,7 +151,7 @@ def try_five():
     global exit_code
     print ("five")
 
-    url = "http://localhost:8081/app.js"
+    url = "http://webserv.com:8081/app.js"
     filename = the_png_file
     data = { "Button": "Submit" }
     myfiles = {field_name: (filename, open(filename, "rb"), 'multipart/form-data')}
