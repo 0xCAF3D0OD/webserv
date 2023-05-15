@@ -60,6 +60,36 @@ def basic_status_code_test ():
     request_get("http://webserv.com:8080/uploads", 401)
     request_get("http://webserv.com:8080/favicon.ico", 404)
 
+def try_one():
+    global exit_code
+    print ("one")
+
+    url = "http://localhost:8081/uploads"
+    filename = "not-real-png.png"
+    myfiles = {"file": (filename, open(filename, "rb"))}
+
+    try:
+        response = requests.post(url, files=myfiles)
+        print(response.text)
+    except Exception as err:
+        exit_code = 1
+        print("KO post")
+
+def try_two():
+    global exit_code
+    print ("two")
+
+    url = "http://localhost:8081/uploads"
+    filename = "not-real-png.png"
+    myfiles = {"file": (filename, open(filename, "rb"), 'image/png')}
+
+    try:
+        response = requests.post(url, files=myfiles)
+        print(response.text)
+    except Exception as err:
+        exit_code = 1
+        print("KO post")
+
 def my_thread (name):
     print(f"tread number {name}")
     basic_status_code_test()
@@ -74,19 +104,11 @@ def multi_request ():
 
 def main ():
     multi_request()
-    global exit_code
-    print ("start main")
 
-    url = "http://localhost:8081/uploads"
-    filename = "not-real-png.png"
-    myfiles = {"file": (filename, open(filename, "rb"))}
-
-    try:
-        response = requests.post(url, files=myfiles)
-        print(response.text)
-    except Exception as err:
-        exit_code = 1
-        print("KO post")
+def main():
+    print ("main")
+    try_one()
+    try_two()
 
 
 if __name__ == "__main__":
