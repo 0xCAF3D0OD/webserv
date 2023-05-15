@@ -40,6 +40,30 @@ def request_get (url, expected_status_code):
 
     print()
 
+def redirection (url, url_redirection):
+    global exit_code
+    print("test redirecion of: " + url)
+
+    try:
+        request_index = requests.get(url)
+    except Exception as e:
+        print ("error: script.py not connectable")
+        sys.exit(1)
+
+    if request_index.history[0].status_code != 301:
+        print_error(f"[KO] : http status code : {request_index.history[0].status_code} / 301")
+        exit_code = 1
+    else:
+        print_success(f"[OK] : http status code : {request_index.history[0].status_code} / 301")
+
+    if request_index.history[1].url != url_redirection:
+        print_error(f"[KO] : http status code : {request_index.history[1].url} != {url_redirection}")
+        exit_code = 1
+    else:
+        print_success(f"[OK] : http status code : {request_index.history[1].url} == {url_redirection}")
+
+    print()
+
 def main ():
     request_get("http://webserv.com:8082/index.html", 200)
     request_get("http://webserv.com:8082/", 200)
@@ -57,6 +81,8 @@ def main ():
     request_get("http://webserv.com:8080/bad_page", 404)
     request_get("http://webserv.com:8080/uploads", 401)
     request_get("http://webserv.com:8080/favicon.ico", 404)
+
+    redirection("http://webserv.com:8081/site_duck", "https://www.duckduckgo.com")
 
 if __name__ == "__main__":
     main()
