@@ -57,10 +57,10 @@ def redirection (url, url_redirection):
         print_success(f"[OK] : http status code : {request_index.history[0].status_code} / 301")
 
     if request_index.history[1].url != url_redirection:
-        print_error(f"[KO] : http status code : {request_index.history[1].url} != {url_redirection}")
+        print_error(f"[KO] : http redirection url : {request_index.history[1].url} != {url_redirection}")
         exit_code = 1
     else:
-        print_success(f"[OK] : http status code : {request_index.history[1].url} == {url_redirection}")
+        print_success(f"[OK] : http redirection url : {request_index.history[1].url} == {url_redirection}")
 
     print()
 
