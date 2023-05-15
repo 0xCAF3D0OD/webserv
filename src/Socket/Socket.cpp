@@ -96,6 +96,8 @@ Socket::socket_recv()
 			std::cout << "body str:" << _body_str << std::endl;
 	}
 	_request.parse_buffer(_header_str);
+	if (LOG_SOCKET)
+		std::cout << "http::Socket: _request:\n" << _request << std::endl;
 	if (_request._request_map["Content-Type"].compare("multipart/form-data") == 0)
 	{
 		if (LOG_SOCKET)
@@ -121,6 +123,8 @@ Socket::multipart_handler()
 	char		 *end = NULL;
 	unsigned long content_length = std::strtoul(_request._request_map["Content-Length"].c_str(), &end, 10);
 
+	if (LOG_SOCKET)
+		std::cout << "http::Socket: mutlipart_handler()" << std::endl;
 	while (_body_str.size() < content_length)
 	{
 		std::memset(buffer, 0, MAXLINE);
