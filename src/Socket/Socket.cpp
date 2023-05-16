@@ -96,6 +96,11 @@ Socket::socket_recv()
 	{
 		delete_handler();
 	}
+	if (_request.get_method().compare("POST") == 0 && !ret
+		&& (_request._request_map["Content-Type"].compare("multipart/form-data") != 0))
+	{
+		_response.body_post_cgi = _body_str;
+	}
 	_response.load_http_request(_request);
 	clean_request();
 	send_response();

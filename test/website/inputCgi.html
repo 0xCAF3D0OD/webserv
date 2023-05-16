@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="style.css" />
-    <script src="submitPage.js" defer></script>
+    <script src="inputCgi.js" defer></script>
     <title>Website</title>
   </head>
   <body>
@@ -15,22 +15,19 @@
         <div class="logo"><h2>Website</h2></div>
         <div class="navigation">
           <a href="./index.html">Home</a>
-		   <a href="./submitPage.html">Submit</a>
-		   <a href="./inputCgi.html">CGI</a>
+          <a href="./submitPage.html">Submit</a>
+          <a href="./inputCgi.html">CGI</a>
         </div>
       </div>
     </header>
     <main class="index-main">
       <div class="wrapper">
         <form id="form" target="_self">
-          <label for="file">Choose file to upload</label>
+          <label for="file">Enter a name:</label>
           <input
-            type="file"
-            name="pics"
-            id="pics-input"
-            accept="image/*, .pdf" />
-          <div class="preview">
-          </div>
+            type="text"
+            name="username"
+            id="username"/>
           <button class="btn" id="submit-btn">Submit</button>
         </form>
       </div>
