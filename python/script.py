@@ -170,7 +170,7 @@ def try_five():
 
 def main():
     print ("main")
-    multi_request()
+    #multi_request()
     global field_name
     for name_field in all_field_name:
         field_name = name_field
