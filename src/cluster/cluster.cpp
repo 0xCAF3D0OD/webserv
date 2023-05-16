@@ -68,7 +68,9 @@ Cluster::run()
 		{
 			FD_ZERO(&reading_set);
 			std::memcpy(&reading_set, &_master_fd_set, sizeof(_master_fd_set));
-			std::cout << "++++++ Waiting for new connection ++++++" << std::endl;
+			std::time_t result = std::time(nullptr);
+			std::cout << std::asctime(std::localtime(&result)) << "++++++ Waiting for new connection ++++++"
+					  << std::endl;
 			select_return = select(_max_fd + 1, &reading_set, NULL, NULL, NULL);
 		}
 		if (select_return > 0)
