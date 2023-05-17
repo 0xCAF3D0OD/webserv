@@ -51,4 +51,11 @@ cMap_to_cChar(std::map<std::string, std::string> myMap)
 	array[i] = NULL;
 	return (array);
 }
+
+std::string
+toUpper(std::string s)
+{
+	std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+	return (s);
+}
 }

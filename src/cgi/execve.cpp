@@ -66,16 +66,14 @@ CGI::check_map(const std::map<std::string, std::string> &map, const std::string 
 			_script_path = name_file;
 	}
 
+	it = map.find("Content-Length");
+	if (it != map.end() && !it->second.empty())
+		_cont_length = it->second;
+	else
+		_cont_length = "0";
+
 	/*----- CONTENT_TYPE -----*/
 	set_private_attribute(map.find("Content-Type"), map.end(), _cont_type);
-	/*----- CONTENT_LENGTH -----*/
-	set_private_attribute(map.find("Content-Length"), map.end(), _cont_length);
-	/*----- PATH_INFO -----*/
-	set_private_attribute(map.find("Path-Info"), map.end(), _location);
-	/*----- PATH_TRANSLATED -----*/
-	set_private_attribute(map.find("Path-Translated"), map.end(), _location);
-	/*----- REQUEST_URI -----*/
-	set_private_attribute(map.find("Request-Uri"), map.end(), _location);
 	/*----- REQUEST_METHOD -----*/
 	set_private_attribute(map.find("Method"), map.end(), _method);
 	/*----- QUERY_STRING -----*/
@@ -93,6 +91,7 @@ CGI::check_map(const std::map<std::string, std::string> &map, const std::string 
  * information, and sensitive data to PHP scripts during their execution, allowing for better separation of
  * concerns, improved security, and easier management of dependencies and configurations.
  */
+
 void
 CGI::set_env(const std::map<std::string, std::string> &map, const std::string &script_name)
 {
@@ -116,12 +115,12 @@ CGI::set_env(const std::map<std::string, std::string> &map, const std::string &s
 	// Par exemple, si le script actuel a été accédé via l'URI
 	// http://www.example.com/php/path_info.php/some/stuff?foo=bar,
 	// $_SERVER['PATH_INFO'] contiendra /some/stuff.
-	_env["PATH_INFO"] = _location;
+	_env["PATH_INFO"] = _script_name;
 	// Chemin complet correspondant tel que supposé par le serveur, si PATH_INFO est présent.
-	_env["PATH_TRANSLATED"] = _location;
+	_env["PATH_TRANSLATED"] = _script_name;
 	// L'URI qui a été donné pour accéder à cette page ; par exemple, "/index.html".
 	// Uniform Resource Identifier (URI) utilisé dans HTTP pour identifier les ressources.
-	_env["REQUEST_URI"] = _location;
+	_env["REQUEST_URI"] = _script_name;
 
 	// Donne l'IP ou le DNS du serveur.
 	_env["SERVER_NAME"] = _env_Host;
@@ -143,111 +142,190 @@ CGI::set_env(const std::map<std::string, std::string> &map, const std::string &s
 	_env["QUERY_STRING"] = _query;
 	// Très utile si vous faites pointer toutes vos pages d'erreur vers le même fichier.
 	_env["REDIRECT_STATUS"] = "200";
-}
 
-std::string
-CGI::parent_process(pid_t &pid, const std::string& body_post_cgi)
-{
-	int ret;
-	close(_p_in[0]);
-	close(_p_out[1]);
-
-	write(_p_out[0], body_post_cgi.c_str(), body_post_cgi.size());
-
-	if (waitpid(pid, &ret, 0) == -1)
+	std::map<std::string, std::string> map1 = map;
+	for (std::map<std::string, std::string>::iterator i = map1.begin(); i != map1.end(); i++)
 	{
-		perror("waitpid");
-		throw(std::exception());
-	}
-
-	ssize_t bytes_read;
-	do
-	{
-		// Fill _read_buffer with 0
-		std::memset(_read_buffer, 0, BUFFER_SIZE);
-		// Initialize bytes_read with the return value from read, for error checking.
-		if ((bytes_read = read(_p_out[0], _read_buffer, BUFFER_SIZE)) == -1)
+		if (!i->second.empty())
 		{
-			perror("read");
-			close(_p_out[0]);
-			exit(1);
+			std::string header = "HTTP_" + utils::toUpper(i->first);
+			std::replace(header.begin(), header.end(), '-', '_');
+			_env[header] = i->second;
+			std::cout << _env[header] << std::endl;
 		}
-		// End of file
-		else if (!bytes_read)
-			break;
-		// std::string output_cgi concatenation with append
-		else
-			_output_cgi.append(_read_buffer, bytes_read);
-	} while (bytes_read == BUFFER_SIZE);
-	// Close the process.
-	close(_p_out[0]);
-	return (_output_cgi);
-}
-
-void
-CGI::child_process(char **env)
-{
-	// Replace the old FD
-	close(_p_out[1]);
-	if (dup2(_p_out[0], STDOUT_FILENO) == -1)
-		perror("dup2");
-	close(_p_out[0]);
-	close(_p_in[0]);
-	if (dup2(_p_in[1], STDIN_FILENO) == -1)
-		perror("dup2");
-	close(_p_in[1]);
-	// Execute new process
-	if (execve(_args[0], &_args[0], env) == -1)
-		perror("execve");
-	exit(1);
-}
-
-static void
-free_env(char **env)
-{
-	for (unsigned int index = 0; env[index]; ++index)
-	{
-		delete[] env[index];
 	}
-	delete[] env;
 }
 
-std::string
-CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args, const std::string& body_post_cgi)
+std::string CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args, const std::string& body_post_cgi)
 {
 	char **env;
-	// Verify if pipe failed.
-	if (pipe(_p_in) == -1 || pipe(_p_out) == -1)
-	{
-		std::cerr << "error pipe" << std::endl;
-		exit(1);
-	}
+	int p_out[2];
+	int p_in[2];
+	int ret;
+	char buffer[4096];
+	std::string result;
+
+	pipe(p_out);
+	pipe(p_in);
+
+	fcntl(p_out[0], F_SETFL, O_NONBLOCK);
+	fcntl(p_out[1], F_SETFL, O_NONBLOCK);
+	fcntl(p_in[0], F_SETFL, O_NONBLOCK);
+	fcntl(p_in[1], F_SETFL, O_NONBLOCK);
+
 	set_env(map, args);
 	env = utils::cMap_to_cChar(_env);
+//	std::vector<char *> path = preparePath(request.getQuery());
+//	std::map<std::string, std::string> env = prepareEnv(request);
 
-	fcntl(_p_out[0], F_SETFL, O_NONBLOCK);
-	fcntl(_p_out[1], F_SETFL, O_NONBLOCK);
-	fcntl(_p_in[0], F_SETFL, O_NONBLOCK);
-	fcntl(_p_in[1], F_SETFL, O_NONBLOCK);
+	int pid = fork();
 
-	pid_t pid = fork();
-	// Verify if fork failed
-	if (pid == -1)
+	if (pid == 0)
 	{
-		std::cerr << "error fork" << std::endl;
-		exit(1);
+		close(p_out[0]);
+		dup2(p_out[1], STDOUT_FILENO);
+		close(p_out[1]);
+
+		close(p_in[1]);
+		dup2(p_in[0], STDIN_FILENO);
+		close(p_in[0]);
+
+		execve(_args[0], &_args[0], env);
+		exit(0);
 	}
-	else if (pid == 0)
-		child_process(env);
 	else
-		parent_process(pid, body_post_cgi);
-	while (!_args.empty())
 	{
-		delete[] _args.back();
-		_args.pop_back();
+		close(p_in[0]);
+		close(p_out[1]);
+
+		std::cout << "getbody '[" << body_post_cgi.c_str() << "]'"<< std::endl;
+		write(p_in[1], body_post_cgi.c_str(), body_post_cgi.size());
+		// std::cout << request.getBody() << "\n";
+		close(p_in[1]);
+
+		if (waitpid(pid, &ret, 0) == -1)
+			throw(std::exception());
+		if (ret != 0) {
+			result.append("Status: 502 Error in CGI application\r\n");
+		}
+
+		do
+		{
+			bzero(&buffer, sizeof(buffer));
+			ret = read(p_out[0], buffer, sizeof(buffer));
+			if (ret > 0)
+				result.append(std::string(buffer, ret));
+		} while (ret == sizeof(buffer));
+		close(p_out[0]);
 	}
-	free_env(env);
-	return (_output_cgi);
+
+	return (result);
 }
+//
+//std::string
+//CGI::parent_process(pid_t &pid, const std::string& body_post_cgi)
+//{
+//	int ret;
+//	close(_p_in[0]);
+//	close(_p_out[1]);
+//
+//	write(_p_in[1], body_post_cgi.c_str(), body_post_cgi.size());
+//
+//	close(_p_in[1]);
+//	if (waitpid(pid, &ret, 0) == -1)
+//	{
+//		perror("waitpid");
+//		throw(std::exception());
+//	}
+//
+//	ssize_t bytes_read;
+//	do
+//	{
+//		// Fill _read_buffer with 0
+//		std::memset(_read_buffer, 0, BUFFER_SIZE);
+//		// Initialize bytes_read with the return value from read, for error checking.
+//		if ((bytes_read = read(_p_out[0], _read_buffer, BUFFER_SIZE)) == -1)
+//		{
+//			perror("read");
+//			close(_p_out[0]);
+//			exit(1);
+//		}
+//		// End of file
+//		else if (!bytes_read)
+//			break;
+//		// std::string output_cgi concatenation with append
+//		else
+//			_output_cgi.append(_read_buffer, bytes_read);
+//	} while (bytes_read == BUFFER_SIZE);
+//	// Close the process.
+//	close(_p_out[0]);
+//	return (_output_cgi);
+//}
+//
+//void
+//CGI::child_process(char **env)
+//{
+//	// Replace the old FD
+//	close(_p_out[0]);
+//	if (dup2(_p_out[1], STDOUT_FILENO) == -1)
+//		perror("dup2");
+//	close(_p_out[1]);
+//	close(_p_in[1]);
+//	if (dup2(_p_in[0], STDIN_FILENO) == -1)
+//		perror("dup2");
+//	close(_p_in[0]);
+//	// Execute new process
+//	if (execve(_args[0], &_args[0], env) == -1)
+//		perror("execve");
+//	exit(1);
+//}
+//
+//static void
+//free_env(char **env)
+//{
+//	for (unsigned int index = 0; env[index]; ++index)
+//	{
+//		delete[] env[index];
+//	}
+//	delete[] env;
+//}
+//
+//std::string
+//CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args, const std::string& body_post_cgi)
+//{
+//	char **env;
+//	// Verify if pipe failed.
+//	if (pipe(_p_in) == -1 || pipe(_p_out) == -1)
+//	{
+//		std::cerr << "error pipe" << std::endl;
+//		exit(1);
+//	}
+//	set_env(map, args);
+//	env = utils::cMap_to_cChar(_env);
+//
+//	fcntl(_p_out[0], F_SETFL, O_NONBLOCK);
+//	fcntl(_p_out[1], F_SETFL, O_NONBLOCK);
+//	fcntl(_p_in[0], F_SETFL, O_NONBLOCK);
+//	fcntl(_p_in[1], F_SETFL, O_NONBLOCK);
+//
+//	pid_t pid = fork();
+//	// Verify if fork failed
+//	if (pid == -1)
+//	{
+//		std::cerr << "error fork" << std::endl;
+//		exit(1);
+//	}
+//	else if (pid == 0)
+//		child_process(env);
+//	else
+//		parent_process(pid, body_post_cgi);
+//	while (!_args.empty())
+//	{
+//		delete[] _args.back();
+//		_args.pop_back();
+//	}
+//	free_env(env);
+//	return (_output_cgi);
+//}
 
 CGI::~CGI(void){};

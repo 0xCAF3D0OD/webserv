@@ -1,5 +1,5 @@
 <html><body>
-
+    
 
 
 <?php
@@ -18,7 +18,7 @@ if(isset($_POST["submit"])) {
     var_dump($check);
     echo "File is an image - " . $check["mime"] . ".";
     $uploadOk = 1;
-  } else {
+  } else { 
     echo "File is not an image.";
     $uploadOk = 0;
  }
