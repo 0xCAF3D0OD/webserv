@@ -4,6 +4,7 @@
 #include "Json.hpp"
 #include "Socket.hpp"
 #include <cstring>
+#include <ctime>
 #include <iostream>
 #include <map>
 #include <sys/stat.h>
