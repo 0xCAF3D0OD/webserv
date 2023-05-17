@@ -6,7 +6,8 @@
 		"method_allowed": {
 			"/uploads" : 7,
 			"/index.html" : 1,
-			"/cgi/input.php" : 1,
+			"/cgi/result.php" : 7,
+			"/cgi/input.php" : 7,
 			"/path/two" : 3
 		},
 		"redirection" : {

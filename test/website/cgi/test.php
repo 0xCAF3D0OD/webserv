@@ -1,16 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>HTML Page for Testing</title>
-</head>
+<html><body>
 
-<body>
 
-<h1>Testing</h1>
 
-ici c'est cgi
+<?php
 
-</body>
+$target_dir = ".";
+$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$uploadOk = 1;
+$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-</html>
+
+// Check if image file is a actual image or fake image
+if(isset($_POST["submit"])) {
+    echo "submit";
+  $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+  if($check !== false) {
+    var_dump($check);
+    echo "File is an image - " . $check["mime"] . ".";
+    $uploadOk = 1;
+  } else {
+    echo "File is not an image.";
+    $uploadOk = 0;
+ }
+}
+
+?>
+hello
+</body></html>

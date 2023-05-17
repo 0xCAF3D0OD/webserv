@@ -69,7 +69,7 @@ test_cgi_with_php(void)
 	std::map<std::string, std::string>::iterator it;
 	CGI											 cgi(cgi_path, cgi_file, "");
 
-	if ((output_cgi = cgi.execution_cgi(map, cgi_file)).empty())
+	if ((output_cgi = cgi.execution_cgi(map, cgi_file, "salut")).empty())
 	{
 		std::cerr << "2.1 Error: output: " << output_cgi << std::endl;
 		return (1);
@@ -89,7 +89,7 @@ test_cgi_with_php_query(void)
 	std::map<std::string, std::string>::iterator it;
 	CGI											 cgi(cgi_path, cgi_file, "");
 
-	if ((output_cgi = cgi.execution_cgi(map, cgi_file)).empty())
+	if ((output_cgi = cgi.execution_cgi(map, cgi_file, "salut")).empty())
 	{
 		std::cerr << "3.1 Error: output: " << output_cgi << std::endl;
 		return (1);
@@ -115,7 +115,7 @@ test_cgi_with_php_query2(void)
 	std::map<std::string, std::string>::iterator it;
 	CGI											 cgi(cgi_path, cgi_file, cgi_query);
 
-	if ((output_cgi = cgi.execution_cgi(map, cgi_file)).empty())
+	if ((output_cgi = cgi.execution_cgi(map, cgi_file, "salut")).empty())
 	{
 		std::cerr << "4.1 Error: output: " << output_cgi << std::endl;
 		return (1);
@@ -141,7 +141,7 @@ test_cgi_with_files(void)
 	std::map<std::string, std::string>::iterator it;
 	CGI											 cgi(cgi_path, cgi_file, cgi_query);
 
-	if ((output_cgi = cgi.execution_cgi(map, cgi_file)).empty())
+	if ((output_cgi = cgi.execution_cgi(map, cgi_file, "salut")).empty())
 	{
 		std::cerr << "5.1.1 Error: output: " << output_cgi << std::endl;
 		return (1);
@@ -156,7 +156,7 @@ test_cgi_with_files(void)
 
 	CGI cgi1(cgi_path, cgi_file, cgi_query);
 
-	if ((output_cgi = cgi1.execution_cgi(map, cgi_file)).empty())
+	if ((output_cgi = cgi1.execution_cgi(map, cgi_file, "salut")).empty())
 	{
 		std::cerr << "5.2.1 Error: output: " << output_cgi << std::endl;
 		return (1);
@@ -171,7 +171,7 @@ test_cgi_with_files(void)
 
 	CGI cgi2(cgi_path, cgi_file, cgi_query);
 
-	if ((output_cgi = cgi2.execution_cgi(map, cgi_file)).empty())
+	if ((output_cgi = cgi2.execution_cgi(map, cgi_file, "salut")).empty())
 	{
 		std::cerr << "5.3.1 Error: output: " << output_cgi << std::endl;
 		return (1);
@@ -186,7 +186,7 @@ test_cgi_with_files(void)
 
 	CGI cgi3(cgi_path, cgi_file, cgi_query);
 
-	if ((output_cgi = cgi3.execution_cgi(map, cgi_file)).empty())
+	if ((output_cgi = cgi3.execution_cgi(map, cgi_file, "salut")).empty())
 	{
 		std::cerr << "5.4.1 Error: output: " << output_cgi << std::endl;
 		return (1);
@@ -201,7 +201,7 @@ test_cgi_with_files(void)
 
 	CGI cgi4(cgi_path, cgi_file, cgi_query);
 
-	if ((output_cgi = cgi4.execution_cgi(map, cgi_file)).empty())
+	if ((output_cgi = cgi4.execution_cgi(map, cgi_file, "salut")).empty())
 	{
 		std::cerr << "5.5.1 Error: output: " << output_cgi << std::endl;
 		return (1);
@@ -216,7 +216,7 @@ test_cgi_with_files(void)
 
 	CGI cgi5(cgi_path, cgi_file, cgi_query);
 
-	if ((output_cgi = cgi5.execution_cgi(map, cgi_file)).empty())
+	if ((output_cgi = cgi5.execution_cgi(map, cgi_file, "salut")).empty())
 	{
 		std::cerr << "5.6.1 Error: output: " << output_cgi << std::endl;
 		return (1);

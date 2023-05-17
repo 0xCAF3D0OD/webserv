@@ -146,25 +146,30 @@ CGI::set_env(const std::map<std::string, std::string> &map, const std::string &s
 }
 
 std::string
-CGI::parent_process(pid_t &pid)
+CGI::parent_process(pid_t &pid, const std::string& body_post_cgi)
 {
 	int ret;
-	close(_pipefd[1]);
+	close(_p_in[0]);
+	close(_p_out[1]);
+
+	write(_p_out[0], body_post_cgi.c_str(), body_post_cgi.size());
+
 	if (waitpid(pid, &ret, 0) == -1)
 	{
 		perror("waitpid");
 		throw(std::exception());
 	}
+
 	ssize_t bytes_read;
 	do
 	{
 		// Fill _read_buffer with 0
 		std::memset(_read_buffer, 0, BUFFER_SIZE);
 		// Initialize bytes_read with the return value from read, for error checking.
-		if ((bytes_read = read(_pipefd[0], _read_buffer, BUFFER_SIZE)) == -1)
+		if ((bytes_read = read(_p_out[0], _read_buffer, BUFFER_SIZE)) == -1)
 		{
 			perror("read");
-			close(_pipefd[0]);
+			close(_p_out[0]);
 			exit(1);
 		}
 		// End of file
@@ -175,19 +180,22 @@ CGI::parent_process(pid_t &pid)
 			_output_cgi.append(_read_buffer, bytes_read);
 	} while (bytes_read == BUFFER_SIZE);
 	// Close the process.
-	close(_pipefd[0]);
+	close(_p_out[0]);
 	return (_output_cgi);
 }
 
 void
 CGI::child_process(char **env)
 {
-	close(_pipefd[0]);
 	// Replace the old FD
-	if (dup2(_pipefd[1], STDOUT_FILENO) == -1)
+	close(_p_out[1]);
+	if (dup2(_p_out[0], STDOUT_FILENO) == -1)
 		perror("dup2");
-	close(_pipefd[1]);
-
+	close(_p_out[0]);
+	close(_p_in[0]);
+	if (dup2(_p_in[1], STDIN_FILENO) == -1)
+		perror("dup2");
+	close(_p_in[1]);
 	// Execute new process
 	if (execve(_args[0], &_args[0], env) == -1)
 		perror("execve");
@@ -205,17 +213,23 @@ free_env(char **env)
 }
 
 std::string
-CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args)
+CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args, const std::string& body_post_cgi)
 {
 	char **env;
 	// Verify if pipe failed.
-	if (pipe(_pipefd) == -1)
+	if (pipe(_p_in) == -1 || pipe(_p_out) == -1)
 	{
 		std::cerr << "error pipe" << std::endl;
 		exit(1);
 	}
 	set_env(map, args);
 	env = utils::cMap_to_cChar(_env);
+
+	fcntl(_p_out[0], F_SETFL, O_NONBLOCK);
+	fcntl(_p_out[1], F_SETFL, O_NONBLOCK);
+	fcntl(_p_in[0], F_SETFL, O_NONBLOCK);
+	fcntl(_p_in[1], F_SETFL, O_NONBLOCK);
+
 	pid_t pid = fork();
 	// Verify if fork failed
 	if (pid == -1)
@@ -226,7 +240,7 @@ CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::str
 	else if (pid == 0)
 		child_process(env);
 	else
-		parent_process(pid);
+		parent_process(pid, body_post_cgi);
 	while (!_args.empty())
 	{
 		delete[] _args.back();
