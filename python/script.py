@@ -19,6 +19,7 @@ TREADS_NUMBER = 15
 
 all_field_name = ["pics", "pics-input", "file"]
 the_png_file = "pp.png"
+contenttype = "image/png"
 
 class bcolors:
     HEADER    = '\033[95m'
@@ -99,7 +100,7 @@ def try_two():
 
     url = "http://webserv.com:8081/uploads"
     filename = the_png_file
-    myfiles = {field_name: (filename, open(filename, "rb"), 'image/png')}
+    myfiles = {field_name: (filename, open(filename, "rb"), contenttype)}
 
     try:
         response = requests.post(url, files=myfiles)
@@ -115,7 +116,8 @@ def try_tree():
     url = "http://webserv.com:8081/uploads"
     filename = the_png_file
     myfiles =  MultipartEncoder(
-    fields={field_name: ('filename', open(the_png_file, 'rb'), 'image/png')}
+
+            fields={field_name: ('filename', open(the_png_file, 'rb'), contenttype)}
     )
 
     try:
@@ -143,7 +145,7 @@ def try_four():
 
     url = "http://webserv.com:8081/uploads"
     filename = the_png_file
-    myfiles = {field_name: (filename, open(filename, "rb"), 'multipart/form-data')}
+    myfiles = {field_name: (filename, open(filename, "rb"), contenttype)}
 
     try:
         response = requests.post(url, files=myfiles)
@@ -159,7 +161,7 @@ def try_five():
     url = "http://webserv.com:8081/app.js"
     filename = the_png_file
     data = { "Button": "Submit" }
-    myfiles = {field_name: (filename, open(filename, "rb"), 'multipart/form-data')}
+    myfiles = {field_name: (filename, open(filename, "rb"), contenttype)}
 
     try:
         response = requests.post(url, files=myfiles, data=data)
