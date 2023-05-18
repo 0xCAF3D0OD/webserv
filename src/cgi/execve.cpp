@@ -156,13 +156,15 @@ CGI::set_env(const std::map<std::string, std::string> &map, const std::string &s
 	}
 }
 
-std::string CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args, const std::string& body_post_cgi)
+std::string
+CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args,
+				   const std::string &body_post_cgi)
 {
-	char **env;
-	int p_out[2];
-	int p_in[2];
-	int ret;
-	char buffer[4096];
+	char	  **env;
+	int			p_out[2];
+	int			p_in[2];
+	int			ret;
+	char		buffer[4096];
 	std::string result;
 
 	pipe(p_out);
@@ -175,8 +177,8 @@ std::string CGI::execution_cgi(const std::map<std::string, std::string> &map, co
 
 	set_env(map, args);
 	env = utils::cMap_to_cChar(_env);
-//	std::vector<char *> path = preparePath(request.getQuery());
-//	std::map<std::string, std::string> env = prepareEnv(request);
+	//	std::vector<char *> path = preparePath(request.getQuery());
+	//	std::map<std::string, std::string> env = prepareEnv(request);
 
 	int pid = fork();
 
@@ -198,14 +200,15 @@ std::string CGI::execution_cgi(const std::map<std::string, std::string> &map, co
 		close(p_in[0]);
 		close(p_out[1]);
 
-		std::cout << "getbody '[" << body_post_cgi.c_str() << "]'"<< std::endl;
+		std::cout << "getbody '[" << body_post_cgi.c_str() << "]'" << std::endl;
 		write(p_in[1], body_post_cgi.c_str(), body_post_cgi.size());
 		// std::cout << request.getBody() << "\n";
 		close(p_in[1]);
 
 		if (waitpid(pid, &ret, 0) == -1)
 			throw(std::exception());
-		if (ret != 0) {
+		if (ret != 0)
+		{
 			result.append("Status: 502 Error in CGI application\r\n");
 		}
 
@@ -222,8 +225,8 @@ std::string CGI::execution_cgi(const std::map<std::string, std::string> &map, co
 	return (result);
 }
 //
-//std::string
-//CGI::parent_process(pid_t &pid, const std::string& body_post_cgi)
+// std::string
+// CGI::parent_process(pid_t &pid, const std::string& body_post_cgi)
 //{
 //	int ret;
 //	close(_p_in[0]);
@@ -262,8 +265,8 @@ std::string CGI::execution_cgi(const std::map<std::string, std::string> &map, co
 //	return (_output_cgi);
 //}
 //
-//void
-//CGI::child_process(char **env)
+// void
+// CGI::child_process(char **env)
 //{
 //	// Replace the old FD
 //	close(_p_out[0]);
@@ -280,8 +283,8 @@ std::string CGI::execution_cgi(const std::map<std::string, std::string> &map, co
 //	exit(1);
 //}
 //
-//static void
-//free_env(char **env)
+// static void
+// free_env(char **env)
 //{
 //	for (unsigned int index = 0; env[index]; ++index)
 //	{
@@ -290,8 +293,9 @@ std::string CGI::execution_cgi(const std::map<std::string, std::string> &map, co
 //	delete[] env;
 //}
 //
-//std::string
-//CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args, const std::string& body_post_cgi)
+// std::string
+// CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args, const
+// std::string& body_post_cgi)
 //{
 //	char **env;
 //	// Verify if pipe failed.
