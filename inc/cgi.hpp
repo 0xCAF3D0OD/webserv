@@ -45,8 +45,9 @@ class CGI
 	CGI(void);
 	CGI(const std::string &bin, const std::string &file, const std::string &query);
 
-	std::string execution_cgi(const std::map<std::string, std::string> &map, const std::string &args, const std::string& body_post_cgi);
-	std::string parent_process(pid_t &pid, const std::string& get_body_cgi);
+	std::string execution_cgi(const std::map<std::string, std::string> &map, const std::string &args,
+							  const std::string &body_post_cgi);
+	std::string parent_process(pid_t &pid, const std::string &get_body_cgi);
 	void		child_process(char **);
 	void		set_env(const std::map<std::string, std::string> &map, const std::string &args);
 	void		check_map(const std::map<std::string, std::string> &map, const std::string &name_file);

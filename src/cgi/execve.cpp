@@ -151,13 +151,13 @@ CGI::set_env(const std::map<std::string, std::string> &map, const std::string &s
 			std::string header = "HTTP_" + utils::toUpper(i->first);
 			std::replace(header.begin(), header.end(), '-', '_');
 			_env[header] = i->second;
-//			std::cout << _env[header] << std::endl;
+			//			std::cout << _env[header] << std::endl;
 		}
 	}
 }
 
 std::string
-CGI::parent_process(pid_t &pid, const std::string& body_post_cgi)
+CGI::parent_process(pid_t &pid, const std::string &body_post_cgi)
 {
 	int ret;
 	close(_p_in[0]);
@@ -225,7 +225,8 @@ free_env(char **env)
 }
 
 std::string
-CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args, const std::string& body_post_cgi)
+CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args,
+				   const std::string &body_post_cgi)
 {
 	char **env;
 	// Verify if pipe failed.
