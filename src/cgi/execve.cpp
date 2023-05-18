@@ -156,6 +156,16 @@ CGI::set_env(const std::map<std::string, std::string> &map, const std::string &s
 	}
 }
 
+static void
+free_env(char **env)
+{
+	for (unsigned int index = 0; env[index]; ++index)
+	{
+		delete[] env[index];
+	}
+	delete[] env;
+}
+
 std::string
 CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::string &args,
 				   const std::string &body_post_cgi)
@@ -222,6 +232,7 @@ CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::str
 		close(p_out[0]);
 	}
 
+	free_env(env);
 	return (result);
 }
 //
