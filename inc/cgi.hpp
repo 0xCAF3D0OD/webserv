@@ -1,6 +1,7 @@
 #ifndef WEBSERV_CGI_HPP
 #define WEBSERV_CGI_HPP
 
+#include <algorithm>
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
