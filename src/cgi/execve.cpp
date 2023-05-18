@@ -231,6 +231,11 @@ CGI::execution_cgi(const std::map<std::string, std::string> &map, const std::str
 		} while (ret == sizeof(buffer));
 		close(p_out[0]);
 	}
+	while (!_args.empty())
+	{
+		delete[] _args.back();
+		_args.pop_back();
+	}
 
 	free_env(env);
 	return (result);
