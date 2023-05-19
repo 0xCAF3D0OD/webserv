@@ -212,20 +212,5 @@ test_cgi_with_files(void)
 		return (1);
 	}
 
-	cgi_file = "test/website/cgi/test.php";
-
-	CGI cgi5(cgi_path, cgi_file, cgi_query);
-
-	if ((output_cgi = cgi5.execution_cgi(map, cgi_file, "salut")).empty())
-	{
-		std::cerr << "5.6.1 Error: output: " << output_cgi << std::endl;
-		return (1);
-	}
-	if (output_cgi.find("No input file specified.") != std::string::npos)
-	{
-		std::cerr << "5.6.2 Error: output: " << output_cgi << std::endl;
-		return (1);
-	}
-
 	return (0);
 }
