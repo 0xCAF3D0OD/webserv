@@ -29,7 +29,6 @@ class Request
 	std::string		get_path() const;
 	std::string		get_protocol() const;
 	std::string		get_host() const;
-	bool			get_file_exist() const;
 	bool			get_has_query() const;
 	void			set_query_false();
 	const t_object &get_map() const;

@@ -123,12 +123,6 @@ Request::get_host() const
 	return "";
 }
 
-bool
-Request::get_file_exist() const
-{
-	return (_request_map.find("fileStatus") != _request_map.end());
-}
-
 std::ostream &
 operator<<(std::ostream &output, Request const &req)
 {
