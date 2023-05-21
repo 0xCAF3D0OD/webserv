@@ -129,12 +129,6 @@ Request::get_file_exist() const
 	return (_request_map.find("fileStatus") != _request_map.end());
 }
 
-bool
-Request::method_is_authorized(const std::string &method) const
-{
-	return (method.compare("GET") == 0 || method.compare("POST") == 0 || method.compare("DELETE") == 0);
-}
-
 std::ostream &
 operator<<(std::ostream &output, Request const &req)
 {

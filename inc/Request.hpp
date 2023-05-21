@@ -25,7 +25,6 @@ class Request
 	~Request();
 
 	int				parse_buffer(std::string);
-	bool			method_is_authorized(const std::string &) const;
 	std::string		get_method() const;
 	std::string		get_path() const;
 	std::string		get_protocol() const;
