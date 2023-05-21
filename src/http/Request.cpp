@@ -59,10 +59,10 @@ Request::parse_first_line(std::string firstLine)
 void
 Request::parse_other_lines(std::vector<std::string> &tmp_vector)
 {
-	std::string delimiter = ":";
-	std::string key;
-	std::string value;
-	int			delimiter_position;
+	std::string			   delimiter = ":";
+	std::string			   key;
+	std::string			   value;
+	std::string::size_type delimiter_position;
 	for (size_t i = 1; i < tmp_vector.size(); i++)
 	{
 		delimiter_position = tmp_vector[i].find(delimiter);
