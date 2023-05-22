@@ -3,7 +3,7 @@ const preview = document.querySelector('.preview');
 const itemsList = document.getElementById('items-hook');
 const submitBtn = document.querySelector('#submit-btn');
 
-let urlUpload = 'http://localhost:8081/cgi/input.php';
+let urlUpload = 'http://localhost:8081/cgi/result.php';
 let url = '';
 
 const submitHandler = (e) => {
