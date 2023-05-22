@@ -231,7 +231,7 @@ Response::has_php_extension(const Request &request) const
 }
 
 void
-Response::php_handler(const Request &request) const
+Response::php_handler(const Request &request)
 {
 	t_object req_map = request.get_map();
 	std::cout << "IT's a .php" << std::endl;
@@ -250,11 +250,29 @@ Response::php_handler(const Request &request) const
 	output_cgi = cgi.execution_cgi(req_map, cgi_file);
 	size_t pos;
 	if ((pos = output_cgi.find('<')) == std::string::npos)
+	{
+		load_response_cgi(400);
 		std::cerr << "wrong format file" << std::endl;
+	}
 	else
 	{
 		output_cgi = output_cgi.substr(pos);
 		std::cout << "output = \n" << output_cgi << std::endl;
+		_response_map["body-string"] = output_cgi;
+		load_response_cgi(200);
+	}
+}
+
+void
+Response::load_response_cgi(int status_code)
+{
+	fill_header_firstpart(status_code);
+	if (status_code != 200)
+		handle_response_with_status_code(status_code);
+	else
+	{
+		set_response_type("html");
+		fill_header_lastpart();
 	}
 }
 
