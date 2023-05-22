@@ -238,7 +238,7 @@ Response::php_handler(const Request &request) const
 	std::cout << body_post_cgi << std::endl;
 
 	//	std::string cgi_path = _server_config.get("php-cgi").get<std::string>();
-	std::string cgi_path = "/Users/kdi-noce/goinfre/php/php-8.2.5/sapi/cgi/php-cgi";
+	std::string cgi_path = "/whatever";
 	if (request.get_has_query())
 		std::cout << "the query string is : " << req_map["Query"] << std::endl;
 
